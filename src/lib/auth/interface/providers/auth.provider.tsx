@@ -62,13 +62,7 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
     setAuth(null);
   };
 
-  const signup = async (_?: any) => {
-    // console.log(input);
-    //   let credentials: any = {
-    //     email: input.get("email"),
-    //     name: input.get("name"),
-    //   };
-  };
+  const signup = async (_?: any) => {};
 
   React.useEffect(() => {
     if (!!providerClient) {
