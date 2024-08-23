@@ -33,10 +33,10 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
 
   const geAuth = async (): Promise<boolean> => {
     setLoadingAuth(true);
-    let auth = await props.provider.isAuthenticated();
-    if (auth) {
-      const idty = await props.provider.geAuth();
-      setAuth(idty);
+    let isAuth = await props.provider.isAuthenticated();
+    if (isAuth) {
+      const auth = await props.provider.geAuth();
+      setAuth(auth);
       navigate("/");
       setTimeout(() => {
         setLoadingAuth(false);
@@ -73,8 +73,6 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
   React.useEffect(() => {
     initProvider();
   }, []);
-
-  // console.log({ auth: auth, authLoading });
 
   return (
     <AuthContext.Provider value={{ login, logout, signup, auth, authLoading }}>

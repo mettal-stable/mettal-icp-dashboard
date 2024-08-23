@@ -7,6 +7,7 @@ export interface IAuthPort {
   getMetalToken(): Promise<void>;
   isAuthenticated(): Promise<boolean>;
   geAuth(): Promise<Auth>;
-  login(_?: any): Promise<any>;
+  login(input?: any): Promise<any>;
   logout(): Promise<void>;
+  signup(input?: any): Promise<any>;
 }

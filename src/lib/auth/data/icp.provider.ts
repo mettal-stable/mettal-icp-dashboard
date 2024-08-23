@@ -19,7 +19,6 @@ export class ICPProvider implements IAuthPort {
   async setClient() {
     this.authClient = await AuthClient.create();
   }
-  async getMetalToken(): Promise<void> {}
 
   async isAuthenticated(): Promise<boolean> {
     return (await this.authClient?.isAuthenticated()) || false;
@@ -27,9 +26,6 @@ export class ICPProvider implements IAuthPort {
 
   async geAuth(): Promise<Auth> {
     this.identity = this.authClient?.getIdentity();
-
-    console.log(this.identity?.getPrincipal().toText());
-
     await this.getMetalToken();
 
     return Auth.of({
@@ -38,7 +34,7 @@ export class ICPProvider implements IAuthPort {
       user: this.user,
     });
   }
-  async login(_?: any): Promise<any> {
+  async login(): Promise<any> {
     return new Promise((resolve: any, reject: any) => {
       this.authClient?.login({
         windowOpenerFeatures:
@@ -58,4 +54,8 @@ export class ICPProvider implements IAuthPort {
   async logout() {
     await this.authClient?.logout();
   }
+  signup(): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
+  async getMetalToken(): Promise<void> {}
 }
