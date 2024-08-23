@@ -1,7 +1,8 @@
 # Mettal Dashboard + ICP Frontend Auth
 
 
+#To run app
 
 ```shell
-  yarn dev to start 
+  yarn dev 
 ```
