@@ -1,9 +1,11 @@
-import { createTheme, Palette } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
+import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   typography: {
     fontFamily: ["Poppins", "sans-serif"].join(","),
+    fontWeightMedium: 600,
+    fontWeightRegular: 500,
   },
   palette: {
     mode: "light",
@@ -20,8 +22,9 @@ const theme = createTheme({
       default: "#f5f0ed",
       paper: "#fff",
     },
-    alternate: {
-      main: "#000",
+    bgGradient: {
+      default:
+        "linear-gradient(130deg, rgba(78,78,148,1) 0%, rgba(45,44,84,1) 100%)",
     },
   },
 });

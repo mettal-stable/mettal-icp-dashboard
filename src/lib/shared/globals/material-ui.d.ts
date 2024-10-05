@@ -9,9 +9,12 @@ import {
 
 declare module "@mui/material/styles/createPalette" {
   export interface PaletteOptions {
-    alternate?: PaletteColorOptions;
+    other?: PaletteColorOptions;
+    bgGradient: Partial<TypeBackground>;
   }
   export interface Palette {
-    alternate: SimplePaletteColorOptions & ColorPartial;
+    other: SimplePaletteColorOptions & ColorPartial;
+    s;
+    bgGradient: Partial<TypeBackground>;
   }
 }

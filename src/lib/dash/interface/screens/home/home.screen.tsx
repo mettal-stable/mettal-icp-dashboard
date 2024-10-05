@@ -1,8 +1,17 @@
 import { CardAmount } from "@dash/interface/components/card-amount/card-amount";
 import { CardInfo } from "@dash/interface/components/card-info/card-info";
+import { HomeTransactions } from "@dash/interface/components/home-transactions/home-transactions";
+import MarketChart from "@dash/interface/components/market-chart/market-chart";
 import { ScreenTitle } from "@dash/interface/components/screen-title/screen-title";
 import { MainLayout } from "@dash/interface/layouts/main.layout";
-import { Button, Container, Grid2, Stack } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Grid2,
+  Stack,
+} from "@mui/material";
 export const HomeScreen = () => {
   return (
     <MainLayout>
@@ -27,13 +36,22 @@ export const HomeScreen = () => {
             </Stack>
           </Grid2>
 
-          <Grid2 size={{ xs: 12 }}>
+          <Grid2 size={{ xs: 12, md: 6 }}>
             <CardAmount
               label="12,000,000,000.00 "
               currency="MXM"
               sublabel={"Current Balance "}
             />
           </Grid2>
+
+          <Grid2 size={{ xs: 12, md: 6 }}>
+            <HomeTransactions />
+          </Grid2>
+
+          <Grid2 size={{ xs: 12 }}>
+            <MarketChart />
+          </Grid2>
+
           <Grid2 size={{ xs: 12, md: 6 }}>
             <CardInfo
               label="Get Sandbox API"
