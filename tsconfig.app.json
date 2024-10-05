@@ -22,7 +22,7 @@
     "paths": {
       "@shared/*": ["./src/lib/shared/*"],
       "@auth/*": ["./src/lib/auth/*"],
-      "@dash/*": ["./src/lib/dashboard/*"]
+      "@dash/*": ["./src/lib/dash/*"]
     }
   },
   "include": ["src"]

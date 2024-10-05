@@ -31,17 +31,17 @@ export const HomeScreen = () => {
               sublabel={"Current Balance "}
             />
           </Grid>
-          <Grid item xs={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CardInfo
-              label="Get Sandox API"
-              context="Use the sandbox API to test our funcionalities or explor our sample app "
+              label="Get Sandbox API"
+              context="Use the Sandbox API to test our funcionalities or explor our sample app "
               btnLabel="Get API Key"
             />
           </Grid>
-          <Grid item xs={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CardInfo
               label="See our documentation"
-              context="Find guides and references to help with integration"
+              context="Find guides and references tod help with integration"
               btnLabel="See Guides"
             />
           </Grid>

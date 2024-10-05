@@ -9,7 +9,7 @@ export default defineConfig({
     alias: {
       "@shared": path.resolve(__dirname, "src/lib/shared"),
       "@auth": path.resolve(__dirname, "src/lib/auth"),
-      "@dash": path.resolve(__dirname, "src/lib/dashboard"),
+      "@dash": path.resolve(__dirname, "src/lib/dash"),
     },
   },
 });

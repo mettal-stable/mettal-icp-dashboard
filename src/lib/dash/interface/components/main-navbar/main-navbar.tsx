@@ -39,7 +39,7 @@ export const MainNavbar = () => {
   const { auth, login, logout } = useContext<any>(AuthContext);
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <IconButton

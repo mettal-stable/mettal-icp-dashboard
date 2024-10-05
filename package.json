@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "surge": "yarn build && cd ./dist/ && cp index.html 200.html && surge --domain --domain https://dashboard.mettal.mx "
+    "surge": "yarn build && cd ./dist/ && cp index.html 200.html && surge --domain --domain https://dashboard.mettal.mx ",
+    "aws": "yarn build && git push"
   },
   "dependencies": {
     "@dfinity/candid": "^2.0.0",
