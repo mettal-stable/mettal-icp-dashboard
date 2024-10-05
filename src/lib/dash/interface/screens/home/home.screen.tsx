@@ -4,14 +4,7 @@ import { HomeTransactions } from "@dash/interface/components/home-transactions/h
 import MarketChart from "@dash/interface/components/market-chart/market-chart";
 import { ScreenTitle } from "@dash/interface/components/screen-title/screen-title";
 import { MainLayout } from "@dash/interface/layouts/main.layout";
-import {
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Grid2,
-  Stack,
-} from "@mui/material";
+import { Button, Container, Grid2, Stack } from "@mui/material";
 export const HomeScreen = () => {
   return (
     <MainLayout>

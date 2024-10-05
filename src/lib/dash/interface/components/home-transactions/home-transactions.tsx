@@ -6,13 +6,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-
-const columns: GridColDef[] = [
-  { field: "amount", headerName: "Transanction Amount" },
-  { field: "status", headerName: "status", width: 100 },
-  { field: "date", headerName: "Date", width: 100 },
-];
 
 const rows = [
   { id: 1, amount: "1,800", status: "Completed", date: "2024-08-12" },
@@ -22,8 +15,6 @@ const rows = [
   { id: 5, amount: "300", status: "Canceled", date: "2024-08-12" },
   { id: 6, amount: "2,100", status: "Completed", date: "2024-08-12" },
 ];
-
-const paginationModel = { page: 0, pageSize: 5 };
 
 export const HomeTransactions = () => {
   return (
