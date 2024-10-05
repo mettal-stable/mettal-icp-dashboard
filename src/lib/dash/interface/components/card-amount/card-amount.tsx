@@ -16,9 +16,22 @@ export interface ICardAmount {
   onInfoIcon?(): void;
 }
 export const CardAmount: React.FC<ICardAmount> = (props) => {
-  const typography = {
-    md: { fontFamily: "Poppins", fontSize: "3.5rem", fontWeight: 500 },
-    xs: { fontFamily: "Poppins", fontSize: "1.5rem", fontWeight: 500 },
+  const amountStyles = {
+    typography: {
+      xs: { fontFamily: "Poppins", fontSize: "1.8rem", fontWeight: 700 },
+      md: { fontFamily: "Poppins", fontSize: "3.5rem", fontWeight: 500 },
+    },
+  };
+
+  const currencyStyles = {
+    typography: {
+      xs: {
+        fontFamily: "Poppins",
+        fontSize: "1.1rem",
+        color: "#666",
+      },
+      md: { fontFamily: "Poppins", fontSize: "1.5rem" },
+    },
   };
 
   const sublabelStyles = {
@@ -40,21 +53,8 @@ export const CardAmount: React.FC<ICardAmount> = (props) => {
     >
       <CardContent>
         <Stack direction="row" spacing={1}>
-          <Typography
-            variant="h2"
-            sx={{
-              typography,
-            }}
-          >
-            {props.label}
-          </Typography>
-          <Typography
-            variant="h2"
-            sx={{
-              fontSize: "1rem",
-              color: "#666",
-            }}
-          >
+          <Typography sx={amountStyles}>{props.label}</Typography>
+          <Typography variant="h2" sx={currencyStyles}>
             {props.currency}
           </Typography>
         </Stack>

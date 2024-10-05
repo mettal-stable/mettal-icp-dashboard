@@ -7,7 +7,7 @@ export const HomeScreen = () => {
   return (
     <MainLayout>
       <Container maxWidth="md" sx={{ pb: 3 }}>
-        <Grid2 container spacing={4}>
+        <Grid2 container spacing={2}>
           <Grid2 size={{ xs: 12, sm: 12, md: 9 }}>
             <ScreenTitle label={"Dashboard"} />
           </Grid2>
@@ -30,7 +30,7 @@ export const HomeScreen = () => {
           <Grid2 size={{ xs: 12 }}>
             <CardAmount
               label="12,000,000,000.00 "
-              currency="MXNT"
+              currency="MXM"
               sublabel={"Current Balance "}
             />
           </Grid2>

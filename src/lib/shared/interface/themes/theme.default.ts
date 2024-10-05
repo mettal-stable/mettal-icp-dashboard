@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material/styles";
+import { createTheme, Palette } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 
 const theme = createTheme({
@@ -18,6 +18,10 @@ const theme = createTheme({
     },
     background: {
       default: "#f5f0ed",
+      paper: "#fff",
+    },
+    alternate: {
+      main: "#000",
     },
   },
 });
