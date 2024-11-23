@@ -14,14 +14,14 @@ import theme from "@shared/interface/themes/theme.default";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import ForwardIcon from "@mui/icons-material/Forward";
 import WalletIcon from "@mui/icons-material/Wallet";
-export interface ICardAmount {
+export interface ICardBalance {
   label?: React.ReactNode;
   sublabel?: React.ReactNode;
   currency?: string;
   onClick?(): void;
   onInfoIcon?(): void;
 }
-export const CardAmount: React.FC<ICardAmount> = (props) => {
+export const CardBalance: React.FC<ICardBalance> = (props) => {
   const amountStyles = {
     typography: {
       xs: {
@@ -98,35 +98,35 @@ export const CardAmount: React.FC<ICardAmount> = (props) => {
           </Stack>
         </Box>
 
-        <Box sx={{ p: 2 }}>
+        <Box sx={{ p: 2, pt: 2 }}>
           <Grid2 container spacing={1} size={12}>
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid2 size={{ xs: 12, md: 12 }}>
               <Button
                 fullWidth
                 variant="outlined"
-                sx={{ height: 80 }}
+                sx={{ height: 50 }}
                 startIcon={<WalletIcon />}
                 color="secondary"
               >
                 Connect Wallet
               </Button>
             </Grid2>
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid2 size={{ xs: 12, md: 12 }}>
               <Button
                 fullWidth
                 variant="outlined"
-                sx={{ height: 80 }}
+                sx={{ height: 50 }}
                 color="secondary"
                 startIcon={<SwapHorizIcon />}
               >
                 Swap
               </Button>
             </Grid2>
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid2 size={{ xs: 12, md: 12 }}>
               <Button
                 fullWidth
                 variant="outlined"
-                sx={{ height: 80 }}
+                sx={{ height: 50 }}
                 color="secondary"
                 startIcon={<ForwardIcon />}
               >
@@ -134,15 +134,15 @@ export const CardAmount: React.FC<ICardAmount> = (props) => {
               </Button>
             </Grid2>
 
-            <Grid2 size={{ xs: 12, md: 6 }}>
+            <Grid2 size={{ xs: 12, md: 12 }}>
               <Button
                 fullWidth
                 variant="outlined"
-                sx={{ height: 80 }}
+                sx={{ height: 50 }}
                 color="secondary"
                 startIcon={<ForwardIcon />}
               >
-                Send Tokens
+                Transfer
               </Button>
             </Grid2>
           </Grid2>

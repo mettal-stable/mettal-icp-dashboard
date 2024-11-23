@@ -7,14 +7,31 @@ import { BrowserRouter } from "react-router-dom";
 import "./assets/app.scss";
 import AuthProvider from "./lib/auth/interface/providers/auth.provider.tsx";
 import theme from "./lib/shared/interface/themes/theme.default.ts";
+import { ApolloProvider } from "@apollo/client";
+
+import { apolloClient } from "@shared/infra/graphql/apollo.tsx";
+import { SessionService } from "@auth/application/services/session.service.ts";
+import { MettalAuthAdapter } from "@auth/data/mettal.auth.adapter.ts";
+import { SnackbarProvider } from "notistack";
+import { NotificationProvider } from "@shared/providers/notification.provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
-    <AuthProvider provider={new ICPProvider()}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AppRouter />
-      </ThemeProvider>
-    </AuthProvider>
+    <ApolloProvider client={apolloClient}>
+      <SnackbarProvider>
+        <NotificationProvider>
+          <AuthProvider
+            provider={new ICPProvider()}
+            session={new SessionService()}
+            adapter={new MettalAuthAdapter()}
+          >
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <AppRouter />
+            </ThemeProvider>
+          </AuthProvider>
+        </NotificationProvider>
+      </SnackbarProvider>
+    </ApolloProvider>
   </BrowserRouter>
 );

@@ -15,6 +15,7 @@ export const AuthLayout: React.FC<IAuthLayout> = (props) => {
       }}
     >
       <AuthNavbar />
+      <Box sx={{ pb: 6 }}></Box>
       {props.children}
     </Box>
   );

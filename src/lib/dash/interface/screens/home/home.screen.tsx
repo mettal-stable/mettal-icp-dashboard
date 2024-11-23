@@ -1,14 +1,81 @@
-import { CardAmount } from "@dash/interface/components/card-amount/card-amount";
+import { CardBalance } from "@dash/interface/components/card-balance/card-balance";
 import { CardInfo } from "@dash/interface/components/card-info/card-info";
+import { CardWalletsSection } from "@dash/interface/components/card-wallets-section/card-wallets-section";
 import { HomeTransactions } from "@dash/interface/components/home-transactions/home-transactions";
 import MarketChart from "@dash/interface/components/market-chart/market-chart";
 import { ScreenTitle } from "@dash/interface/components/screen-title/screen-title";
+import { WindowSell } from "@dash/interface/components/window-sell/window-sell";
 import { MainLayout } from "@dash/interface/layouts/main.layout";
-import { Button, Container, Grid2, Stack } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid2,
+  Stack,
+} from "@mui/material";
+import { KycStatus, useHomeScreenHook } from "./hooks/home.screen.hook";
 export const HomeScreen = () => {
+  const hook = useHomeScreenHook();
   return (
-    <MainLayout>
-      <Container maxWidth="md" sx={{ pb: 3 }}>
+    <MainLayout
+      alert={
+        hook.accountLoading == false ? (
+          hook.account?.kyc?.status !== KycStatus.COMPLETED ? (
+            <Alert
+              severity={
+                hook.account?.kyc?.status === KycStatus.IN_PROGRESS
+                  ? "info"
+                  : "warning"
+              }
+              variant="filled"
+              sx={{ borderRadius: 0, textAlign: "center" }}
+              action={
+                hook.account?.kyc?.status === KycStatus.IN_PROGRESS ? null : (
+                  <Button
+                    size="small"
+                    variant="contained"
+                    onClick={hook.onStartKyc}
+                    disabled={hook.kycLoading}
+                    startIcon={
+                      hook.kycLoading ? (
+                        <CircularProgress size={16} color="inherit" />
+                      ) : null
+                    }
+                  >
+                    Start KYC
+                  </Button>
+                )
+              }
+            >
+              {hook.account?.kyc?.status === KycStatus.IN_PROGRESS ? (
+                <Box>Your KYC is in Progress</Box>
+              ) : (
+                <Box>
+                  {" "}
+                  You are not verified, please complete your KYC, and{" "}
+                  <strong>win $10 MXND</strong>
+                </Box>
+              )}
+            </Alert>
+          ) : null
+        ) : null
+      }
+    >
+      {hook.showSellWindow ? (
+        <WindowSell
+          open={hook.showSellWindow}
+          data={hook.sellWallet}
+          processing={hook.formProcessing}
+          onClose={() => {
+            hook.setShowSellWindow(false);
+          }}
+          onSubmit={hook.sellCrypto}
+          destinationAccounts={hook.destinationAccounts}
+        />
+      ) : null}
+      <Container maxWidth="md">
         <Grid2 container spacing={2}>
           <Grid2 size={{ xs: 12, sm: 12, md: 9 }}>
             <ScreenTitle label={"Dashboard"} />
@@ -20,7 +87,12 @@ export const HomeScreen = () => {
               justifyContent="space-between"
               sx={{ mb: 2 }}
             >
-              <Button variant="outlined" color="secondary" fullWidth>
+              <Button
+                variant="outlined"
+                color="secondary"
+                fullWidth
+                onClick={() => hook.onShowTransfer()}
+              >
                 Transfer
               </Button>
               <Button variant="contained" color="secondary" fullWidth>
@@ -30,14 +102,21 @@ export const HomeScreen = () => {
           </Grid2>
 
           <Grid2 size={{ xs: 12, md: 6 }}>
-            <CardAmount
-              label="12,000,000,000.00 "
-              currency="MXM"
+            <CardBalance
+              label={hook.balance.amount_formated}
+              currency="MXND"
               sublabel={"Current Balance "}
             />
           </Grid2>
 
           <Grid2 size={{ xs: 12, md: 6 }}>
+            <CardWalletsSection
+              data={hook.wallets}
+              onSell={hook.onShowSellWindow}
+            />
+          </Grid2>
+
+          <Grid2 size={{ xs: 12, md: 12 }}>
             <HomeTransactions />
           </Grid2>
 

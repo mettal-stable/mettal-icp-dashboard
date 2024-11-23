@@ -1,8 +1,13 @@
 import { Auth } from "@auth/domain/models/auth.model";
 import { IAuthPort } from "@auth/domain/ports/auth.port";
+import { Identity } from "@dfinity/agent";
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 export class SupabaseProvider implements IAuthPort {
+  [x: string]: any;
+  getIdentity(): Identity | undefined {
+    throw new Error("Method not implemented.");
+  }
   authClient?: SupabaseClient;
   identity?: any;
   async init(): Promise<void> {

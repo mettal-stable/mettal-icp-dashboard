@@ -19,10 +19,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+
     "paths": {
       "@shared/*": ["./src/lib/shared/*"],
       "@auth/*": ["./src/lib/auth/*"],
-      "@dash/*": ["./src/lib/dash/*"]
+      "@dash/*": ["./src/lib/dash/*"],
+      "@transactions/*": ["./src/lib/transactions/*"],
+      "@assets/*": ["./src/assets/*"]
     }
   },
   "include": ["src"]
