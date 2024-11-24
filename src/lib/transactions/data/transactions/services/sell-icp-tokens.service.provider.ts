@@ -5,7 +5,7 @@ import {
   IRequestPort,
 } from "@shared/data/graphql.request.adapter";
 
-export class SellTokensService {
+export class SellIcpTokensServiceProvider {
   input?: any;
   adapter?: IRequestPort<ServiceException>;
   results: any;
@@ -47,9 +47,7 @@ export class SellTokensService {
   getQuery() {
     return `
         mutation SellTokens($input: SellTokensInputType!) {
-            SellTokens(input: $input) {
-                amount
-            }
+            SellTokens(input: $input) 
         }
     `;
   }

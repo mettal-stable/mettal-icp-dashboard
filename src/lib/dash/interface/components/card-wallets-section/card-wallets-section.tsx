@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, Grid2 } from "@mui/material";
 import theme from "@shared/interface/themes/theme.default";
 import { CardWallet } from "../card-wallet/card-wallet";
-import { IWallet } from "@dash/domain/models/wallet.model";
+import { IWallet } from "../../../../account/domain/value-objects/wallet.model";
 
 export interface ICardWalletsSection {
   data: IWallet[];
@@ -24,13 +24,13 @@ export const CardWalletsSection: React.FC<ICardWalletsSection> = (props) => {
         borderBottomRightRadius: 0,
         transition: "all 300ms ease-in",
         boxShadow: "11px 17px 60px -81px rgba(0,0,0,0.56)",
-        background: theme.palette.bgGradient.default,
+        background: theme.palette.background.paper,
       }}
     >
       <CardHeader
         title="Wallets"
         sx={{
-          color: theme.palette.primary.contrastText,
+          color: theme.palette.text.primary,
         }}
       />
       <CardContent sx={{ p: 0, flexGrow: 1, flexDirection: "column" }}>

@@ -3,6 +3,7 @@ import { User } from "@auth/domain/models/user.model";
 import { IAuthPort } from "@auth/domain/ports/auth.port";
 import { Identity } from "@dfinity/agent/lib/cjs/auth";
 import { AuthClient } from "@dfinity/auth-client";
+import { Principal } from "@dfinity/principal";
 
 export class ICPProvider implements IAuthPort {
   token?: string;
@@ -28,6 +29,10 @@ export class ICPProvider implements IAuthPort {
 
   getIdentity(): Identity | undefined {
     return this.authClient?.getIdentity();
+  }
+
+  async getPrincipal(): Promise<Principal | undefined> {
+    return this.authClient?.getIdentity()?.getPrincipal();
   }
 
   async geAuth(): Promise<Auth> {

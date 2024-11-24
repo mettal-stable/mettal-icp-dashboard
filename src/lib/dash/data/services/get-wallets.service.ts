@@ -23,7 +23,11 @@ export class GetWalletsService {
 
   async request() {
     try {
-      await this.adapter?.query(this.getQuery(), this.getVariables());
+      await this.adapter?.query(
+        this.getQuery(),
+        this.getVariables(),
+        "no-cache"
+      );
     } catch (error) {
       console.log(error);
     }

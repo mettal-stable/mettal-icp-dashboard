@@ -1,4 +1,4 @@
-import { IWallet } from "@dash/domain/models/wallet.model";
+import { IWallet, Wallet } from "@account/domain/value-objects/wallet.model";
 import { DestinationAccount } from "@dash/interface/screens/home/hooks/home.screen.hook";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -29,6 +29,7 @@ export interface IWindowSell {
   data: IWallet;
   open: boolean;
   processing: boolean;
+  minAmount: number;
   destinationAccounts: DestinationAccount[];
   onClose(): void;
   onSubmit(input: any): void;
@@ -39,7 +40,7 @@ export interface Inputs {
   destinationAccount: string | null;
 }
 export const WindowSell: React.FC<IWindowSell> = (props) => {
-  const initAmount = "0.00";
+  const initAmount = Wallet.formatAmount(props.minAmount);
   const [inputs, setInputs] = useState<Inputs>({
     amount: initAmount,
     destinationAccount: null,
@@ -58,7 +59,6 @@ export const WindowSell: React.FC<IWindowSell> = (props) => {
       if (
         inputs?.amount === null ||
         inputs?.destinationAccount === null ||
-        inputs?.amount === initAmount ||
         inputs?.amount.length === 0
       ) {
         return true;
@@ -81,7 +81,7 @@ export const WindowSell: React.FC<IWindowSell> = (props) => {
   };
 
   const setMaxWallet = () => {
-    onChangeInput("amount", props.data.amount_with_decimals);
+    onChangeInput("amount", props.data.balance_with_decimals);
   };
 
   const resetAmount = () => {
@@ -234,7 +234,9 @@ export const WindowSell: React.FC<IWindowSell> = (props) => {
                   variant="contained"
                   fullWidth
                   disabled={disableSubmitBtn()}
-                  onClick={() => props.onSubmit(inputs)}
+                  onClick={() =>
+                    props.onSubmit({ ...inputs, wallet: props.data })
+                  }
                 >
                   Sell
                 </Button>

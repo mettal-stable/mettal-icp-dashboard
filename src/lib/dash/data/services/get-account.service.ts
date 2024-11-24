@@ -59,6 +59,25 @@ export class GetAccountService {
                 last_name
                 id
               }
+              wallets{
+                balance
+              balance_formated
+              balance_with_decimals
+              default
+              name
+              network
+              actions{
+                deposit
+                withdraw
+                buy
+                sell  
+                swap
+              }
+              limits{
+                buy_amount
+                sell_amount
+              }
+              }
             }
           }
     `;

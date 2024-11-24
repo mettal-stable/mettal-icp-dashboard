@@ -14,6 +14,11 @@ import { SessionService } from "@auth/application/services/session.service.ts";
 import { MettalAuthAdapter } from "@auth/data/mettal.auth.adapter.ts";
 import { SnackbarProvider } from "notistack";
 import { NotificationProvider } from "@shared/providers/notification.provider.tsx";
+import { SocketProvider } from "@shared/providers/socket-provider.tsx";
+
+if (typeof global === "undefined") {
+  window.global = window;
+}
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
@@ -25,10 +30,12 @@ createRoot(document.getElementById("root")!).render(
             session={new SessionService()}
             adapter={new MettalAuthAdapter()}
           >
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <AppRouter />
-            </ThemeProvider>
+            <SocketProvider>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <AppRouter />
+              </ThemeProvider>
+            </SocketProvider>
           </AuthProvider>
         </NotificationProvider>
       </SnackbarProvider>

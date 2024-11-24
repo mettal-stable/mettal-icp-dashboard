@@ -21,6 +21,8 @@ export type IAuthContext = {
   validateOtp(input: any): Promise<any>;
   auth: Auth | null;
   authLoading: boolean;
+  account: any;
+  getAccount(): Promise<any>;
 };
 
 export interface IAuthProvider {
@@ -48,6 +50,7 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
   const [authLoading, setLoadingAuth] = useState<boolean>(true);
   const [auth, setAuth] = useState<Auth | null>(null);
   const [providerClient, setProviderClient] = useState<any>(null);
+  const [account, setAccount] = useState<any>(null);
 
   const initProvider = async () => {
     await props.provider.init();
@@ -59,24 +62,26 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
     let isAuth = await props.provider.isAuthenticated();
 
     if (isAuth) {
-      const auth = await props.provider.geAuth();
+      const auth = await getAuth();
+      const account = await getAccount();
 
-      setAuth(auth);
+      if (auth) {
+        props.session.register(auth);
 
-      const account = await props.adapter.getAccount();
-      console.log({ account });
-      props.session.register(auth);
-
-      if (!account) {
-        await props.provider.logout();
-        useErrorAlert!({ message: "Account not found" });
+        if (!account) {
+          await props.provider.logout();
+          useErrorAlert!({ message: "Account not found" });
+          return true;
+        }
+        navigate("/");
+        setTimeout(() => {
+          setLoadingAuth(false);
+        }, 300);
         return true;
-      }
-      navigate("/");
-      setTimeout(() => {
+      } else {
         setLoadingAuth(false);
-      }, 300);
-      return true;
+        return false;
+      }
     } else {
       setLoadingAuth(false);
       return false;
@@ -136,6 +141,28 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
     }
   };
 
+  const getAuth = async () => {
+    try {
+      const auth = await props.provider.geAuth();
+      setAuth(auth);
+      return auth;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  };
+
+  const getAccount = async () => {
+    try {
+      const account = await props.adapter.getAccount();
+      setAccount(account);
+      return account;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  };
+
   React.useEffect(() => {
     if (!!providerClient) {
       geAuth();
@@ -148,7 +175,17 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
 
   return (
     <AuthContext.Provider
-      value={{ login, logout, linkIcp, signup, auth, authLoading, validateOtp }}
+      value={{
+        login,
+        logout,
+        linkIcp,
+        signup,
+        auth,
+        authLoading,
+        validateOtp,
+        account,
+        getAccount,
+      }}
     >
       {props.children}
     </AuthContext.Provider>

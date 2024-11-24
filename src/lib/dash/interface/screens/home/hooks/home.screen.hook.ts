@@ -1,8 +1,13 @@
-import { AccountAdapter } from "@dash/data/account.adapter";
-import { IWallet } from "@dash/domain/models/wallet.model";
+import { IWallet, Wallet } from "@account/domain/value-objects/wallet.model";
+import { AuthContext } from "@auth/interface/providers/auth.provider";
 import { KycVerifier } from "@shared/infra/utils/kyc/kyc.";
-import { TransactionAdapter } from "@transactions/data/transactions.adapter";
-import { useEffect, useState } from "react";
+import { SellTokensService } from "@transactions/application/sell-tokens.service";
+
+import { AccountAdapter } from "@dash/data/account.adapter";
+import { NotificationContext } from "@shared/providers/notification.provider";
+import { SocketContext } from "@shared/providers/socket-provider";
+import { TransactionAdapter } from "@transactions/data/transactions/transactions.adapter";
+import { useContext, useEffect, useState } from "react";
 
 export interface DestinationAccount {
   number: string;
@@ -27,19 +32,23 @@ export enum KycVeredict {
 }
 export enum KycStatus {
   STARTED = "started",
-  IN_PROGRESS = "IN_PROGRESS",
+  IN_PROGRESS = "in_progress",
   COMPLETED = "completed",
   NOT_STARTED = "not_started",
   NEEDS_MANUAL_REVIEW = "needs_manual_review",
 }
 
 export const useHomeScreenHook = () => {
+  const minAmount = 5;
+  const { account, getAccount } = useContext<any>(AuthContext);
+  const { socketChannel } = useContext<any>(SocketContext);
+  const { useInfoAlert, useErrorAlert, useSuccessAlert } =
+    useContext<any>(NotificationContext);
   const [showSellWindow, setShowSellWindow] = useState(false);
   const [sellWallet, setSellWallet] = useState<any>();
   const [wallets, setWallets] = useState([]);
-  const [account, setAccount] = useState<any>();
-  const [accountLoading, setAccountLoading] = useState<boolean>(false);
   const [kycLoading, setKycLoading] = useState<boolean>(false);
+  const [listeningEvents, setListeningEvents] = useState<boolean>(false);
 
   const [formProcessing, setFormProcessing] = useState<boolean>(false);
   const [destinationAccounts, setDestinationAccounts] = useState<
@@ -49,19 +58,6 @@ export const useHomeScreenHook = () => {
     amount: 0,
     amount_formated: "0",
   });
-
-  const getAccount = async () => {
-    try {
-      setAccountLoading(true);
-      const adapter = new AccountAdapter();
-      let response = await adapter.getAccount();
-      setAccount(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setAccountLoading(false);
-    }
-  };
 
   const calculateBalance = (wallets: IWallet[]) => {
     let balance = wallets.reduce((a: any, b: any) => {
@@ -79,9 +75,7 @@ export const useHomeScreenHook = () => {
   const getWallets = async () => {
     const adapter = new AccountAdapter();
     let { data } = await adapter.getWallets();
-
     if (data) {
-      calculateBalance(data);
       setWallets(data);
     }
   };
@@ -96,19 +90,39 @@ export const useHomeScreenHook = () => {
   };
 
   const sellCrypto = async (inputs: any) => {
-    setFormProcessing(true);
-    let adapter = new TransactionAdapter();
-    await adapter.sellCrypto(inputs);
-    setTimeout(() => {
+    try {
+      setFormProcessing(true);
+      if (inputs.amount < minAmount) {
+        useErrorAlert({
+          message: `Amount cannot be lower than ${Wallet.formatAmount(
+            minAmount,
+            true
+          )}`,
+        });
+        setFormProcessing(false);
+        return;
+      }
+      const service = new SellTokensService();
+      inputs.amount = inputs.amount * 100;
+      let response = await service.execute(inputs);
+
+      if (response) {
+        setShowSellWindow(false);
+        useSuccessAlert({
+          message: "Tokens sell transaction has been received",
+        });
+      }
+    } catch (error: any) {
+      useErrorAlert({ message: error.message });
+    } finally {
       setFormProcessing(false);
-    }, 3000);
+    }
   };
 
   const onStartKyc = async () => {
     const kyc = new KycVerifier();
     setKycLoading(true);
     await kyc.execute({ user: account.user }, (msg: any) => {
-      console.log({ msg });
       switch (msg) {
         case "CANCELED":
           break;
@@ -128,20 +142,44 @@ export const useHomeScreenHook = () => {
 
   const onShowTransfer = async () => {
     let adapter = new TransactionAdapter();
-    let response = await adapter.kycCompletedReward();
-    console.log({ response });
+    await adapter.kycCompletedReward();
+  };
+
+  const onNewIncome = async (data: any) => {
+    await getWallets();
+    useInfoAlert({
+      message: data.reason,
+    });
+  };
+
+  const listenToEvents = () => {
+    socketChannel?.bind("balance-updated", (data: any) => {
+      onNewIncome(data);
+    });
+
+    setListeningEvents(true);
   };
 
   useEffect(() => {
-    if (account) {
-      getWallets();
-      getDestinationAccounts();
+    if (wallets.length > 0) {
+      calculateBalance(wallets);
     }
-  }, [account]);
+  }, [wallets]);
 
   useEffect(() => {
-    getAccount();
-  }, []);
+    if (wallets.length > 0) {
+      if (!listeningEvents) {
+        listenToEvents();
+      }
+    }
+  }, [wallets]);
+
+  useEffect(() => {
+    if (account) {
+      getDestinationAccounts();
+      setWallets(account.wallets);
+    }
+  }, [account]);
 
   return {
     wallets,
@@ -156,7 +194,7 @@ export const useHomeScreenHook = () => {
     account,
     onStartKyc,
     kycLoading,
-    accountLoading,
     onShowTransfer,
+    minAmount,
   };
 };

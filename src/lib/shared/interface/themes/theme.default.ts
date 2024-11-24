@@ -19,9 +19,11 @@ const theme = createTheme({
       main: red.A400,
     },
     background: {
-      default: "#f5f0ed",
       paper: "#fff",
+      default: "#f5f0ed",
+      secondary: "#efeeff ",
     },
+
     bgGradient: {
       default:
         "linear-gradient(130deg, rgba(78,78,148,1) 0%, rgba(45,44,84,1) 100%)",

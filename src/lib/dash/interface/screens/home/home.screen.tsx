@@ -21,50 +21,49 @@ export const HomeScreen = () => {
   return (
     <MainLayout
       alert={
-        hook.accountLoading == false ? (
-          hook.account?.kyc?.status !== KycStatus.COMPLETED ? (
-            <Alert
-              severity={
-                hook.account?.kyc?.status === KycStatus.IN_PROGRESS
-                  ? "info"
-                  : "warning"
-              }
-              variant="filled"
-              sx={{ borderRadius: 0, textAlign: "center" }}
-              action={
-                hook.account?.kyc?.status === KycStatus.IN_PROGRESS ? null : (
-                  <Button
-                    size="small"
-                    variant="contained"
-                    onClick={hook.onStartKyc}
-                    disabled={hook.kycLoading}
-                    startIcon={
-                      hook.kycLoading ? (
-                        <CircularProgress size={16} color="inherit" />
-                      ) : null
-                    }
-                  >
-                    Start KYC
-                  </Button>
-                )
-              }
-            >
-              {hook.account?.kyc?.status === KycStatus.IN_PROGRESS ? (
-                <Box>Your KYC is in Progress</Box>
-              ) : (
-                <Box>
-                  {" "}
-                  You are not verified, please complete your KYC, and{" "}
-                  <strong>win $10 MXND</strong>
-                </Box>
-              )}
-            </Alert>
-          ) : null
+        hook.account?.kyc?.status !== KycStatus.COMPLETED ? (
+          <Alert
+            severity={
+              hook.account?.kyc?.status === KycStatus.IN_PROGRESS
+                ? "info"
+                : "warning"
+            }
+            variant="filled"
+            sx={{ borderRadius: 0, textAlign: "center" }}
+            action={
+              hook.account?.kyc?.status === KycStatus.IN_PROGRESS ? null : (
+                <Button
+                  size="small"
+                  variant="contained"
+                  onClick={hook.onStartKyc}
+                  disabled={hook.kycLoading}
+                  startIcon={
+                    hook.kycLoading ? (
+                      <CircularProgress size={16} color="inherit" />
+                    ) : null
+                  }
+                >
+                  Start KYC
+                </Button>
+              )
+            }
+          >
+            {hook.account?.kyc?.status === KycStatus.IN_PROGRESS ? (
+              <Box>Your KYC is in Progress</Box>
+            ) : (
+              <Box>
+                {" "}
+                You are not verified, please complete your KYC, and{" "}
+                <strong>win $10 MXND</strong>
+              </Box>
+            )}
+          </Alert>
         ) : null
       }
     >
       {hook.showSellWindow ? (
         <WindowSell
+          minAmount={hook.minAmount}
           open={hook.showSellWindow}
           data={hook.sellWallet}
           processing={hook.formProcessing}

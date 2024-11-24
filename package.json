@@ -42,9 +42,11 @@
     "jwt-decode": "^4.0.0",
     "mui-one-time-password-input": "^3.0.1",
     "notistack": "^3.0.1",
+    "pusher-js": "^8.4.0-rc2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.0",
+    "vite-plugin-node-polyfills": "^0.22.0"
   },
   "devDependencies": {
     "@dfinity/agent": "^2.0.0",

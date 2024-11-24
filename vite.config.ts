@@ -12,6 +12,7 @@ export default defineConfig({
       "@auth": path.resolve(__dirname, "src/lib/auth"),
       "@dash": path.resolve(__dirname, "src/lib/dash"),
       "@transactions": path.resolve(__dirname, "src/lib/transactions"),
+      "@account": path.resolve(__dirname, "src/lib/account"),
     },
   },
 });

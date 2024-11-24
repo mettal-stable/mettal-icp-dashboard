@@ -25,7 +25,8 @@
       "@auth/*": ["./src/lib/auth/*"],
       "@dash/*": ["./src/lib/dash/*"],
       "@transactions/*": ["./src/lib/transactions/*"],
-      "@assets/*": ["./src/assets/*"]
+      "@assets/*": ["./src/assets/*"],
+      "@account/*": ["./src/lib/account/*"]
     }
   },
   "include": ["src"]
