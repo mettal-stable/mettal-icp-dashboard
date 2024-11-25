@@ -62,6 +62,7 @@ export class IcpCanisterAdapter {
 
       return response.Ok ? true : false;
     } catch (error: any) {
+      console.log({ error });
       throw Error(error.message);
     }
   }

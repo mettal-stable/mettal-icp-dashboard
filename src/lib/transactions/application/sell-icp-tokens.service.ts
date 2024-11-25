@@ -23,7 +23,6 @@ export class SellIcpTokensService {
 
   async approve() {
     return await this.transactions?.approveIcpTransfer(this.inputs);
-    return true;
   }
   async sell() {
     let response = await this.transactions?.sellIcpToken(this.inputs);
