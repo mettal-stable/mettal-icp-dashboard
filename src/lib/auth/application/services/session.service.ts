@@ -88,5 +88,7 @@ export class SessionService {
     Cookies.remove("auth_data");
   }
 
-  async signout() {}
+  async signout() {
+    this.removeStored();
+  }
 }
