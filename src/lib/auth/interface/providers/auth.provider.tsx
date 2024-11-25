@@ -62,21 +62,19 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
     let isAuth = await props.provider.isAuthenticated();
 
     if (isAuth) {
-      const auth = await getAuth();
-      const account = await getAccount();
-
+      const auth = await props.provider.geAuth();
       if (auth) {
         props.session.register(auth);
+        setAuth(auth);
+        navigate("/");
 
+        const account = await getAccount();
         if (!account) {
           await props.provider.logout();
           useErrorAlert!({ message: "Account not found" });
           return true;
         }
-        navigate("/");
-        setTimeout(() => {
-          setLoadingAuth(false);
-        }, 300);
+        setLoadingAuth(false);
         return true;
       } else {
         setLoadingAuth(false);
@@ -102,13 +100,16 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
     try {
       await props.provider.login();
       let identity = props.provider.getIdentity();
+
       await props.adapter.linkIcp({
         access_token: accessTmpToken?.access_token,
         email: input?.email,
         principal: identity?.getPrincipal().toString(),
       });
 
-      await geAuth();
+      setTimeout(() => {
+        geAuth();
+      }, 1000);
     } catch (error: any) {
       useErrorAlert!(error);
       console.error(error);
@@ -139,17 +140,6 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
       return response;
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const getAuth = async () => {
-    try {
-      const auth = await props.provider.geAuth();
-      setAuth(auth);
-      return auth;
-    } catch (error) {
-      console.log(error);
-      return null;
     }
   };
 

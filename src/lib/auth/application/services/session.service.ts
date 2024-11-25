@@ -48,6 +48,8 @@ export class SessionService {
 
   getAuthFromCookie(): Auth | null {
     let data = Cookies.get("auth_data");
+
+    console.log(data);
     if (data) {
       let auth: Auth = Auth.of(JSON.parse(data));
       if (auth?.token) {
