@@ -24,9 +24,9 @@ export class IcpCanisterAdapter {
       identity,
     });
 
-    if (process.env.NODE_ENV !== "production") {
-      this.agent.fetchRootKey();
-    }
+    // if (process.env.NODE_ENV !== "production") {
+    this.agent.fetchRootKey();
+    // }
   }
 
   async getIcrcCanisterActor(): Promise<any> {
