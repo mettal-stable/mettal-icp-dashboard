@@ -128,7 +128,6 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
   };
 
   const logout = async () => {
-    await props.provider.logout();
     await props.session.signout();
     await props.provider.logout();
     setAuth(null);
