@@ -3,7 +3,6 @@ import { AuthContext } from "@auth/interface/providers/auth.provider";
 import { KycVerifier } from "@shared/infra/utils/kyc/kyc.";
 import { SellTokensService } from "@transactions/application/sell-tokens.service";
 
-import { AccountAdapter } from "@dash/data/account.adapter";
 import { NotificationContext } from "@shared/providers/notification.provider";
 import { SocketContext } from "@shared/providers/socket-provider";
 import { TransactionAdapter } from "@transactions/data/transactions/transactions.adapter";
@@ -72,13 +71,13 @@ export const useHomeScreenHook = () => {
     });
   };
 
-  const getWallets = async () => {
-    const adapter = new AccountAdapter();
-    let { data } = await adapter.getWallets();
-    if (data) {
-      setWallets(data);
-    }
-  };
+  // const getWallets = async () => {
+  //   const adapter = new AccountAdapter();
+  //   let { data } = await adapter.getWallets();
+  //   if (data) {
+  //     setWallets(data);
+  //   }
+  // };
 
   const getDestinationAccounts = () => {
     setDestinationAccounts(destination_accounts);
@@ -146,17 +145,21 @@ export const useHomeScreenHook = () => {
   };
 
   const onNewIncome = async (data: any) => {
-    await getWallets();
-    useInfoAlert({
+    await getAccount();
+    useSuccessAlert({
       message: data.reason,
     });
   };
 
-  const listenToEvents = () => {
-    socketChannel?.bind("balance-updated", (data: any) => {
-      onNewIncome(data);
+  const onKycCompleted = async (_: any) => {
+    useInfoAlert({
+      message: "Your KYC has been completed",
     });
+  };
 
+  const listenToEvents = () => {
+    socketChannel?.bind("kyc-completed", onKycCompleted);
+    socketChannel?.bind("balance-updated", onNewIncome);
     setListeningEvents(true);
   };
 

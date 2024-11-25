@@ -18,7 +18,7 @@ import {
 import { KycStatus, useHomeScreenHook } from "./hooks/home.screen.hook";
 export const HomeScreen = () => {
   const hook = useHomeScreenHook();
-  console.log({ status: hook.account?.kyc?.statu });
+  console.log({ status: hook.account?.kyc?.status });
   return (
     <MainLayout
       alert={
@@ -91,7 +91,7 @@ export const HomeScreen = () => {
                 variant="outlined"
                 color="secondary"
                 fullWidth
-                onClick={() => hook.onShowTransfer()}
+                onClick={() => {}}
               >
                 Transfer
               </Button>
