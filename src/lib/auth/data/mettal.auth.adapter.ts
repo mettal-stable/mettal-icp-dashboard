@@ -33,7 +33,11 @@ export class MettalAuthAdapter {
 
   async linkIcp(input: any) {
     const service = new LinkIcpAuthService();
-    return await service.execute(input);
+
+    await this.login(null);
+    let identity = this.provider.getIdentity();
+    let principal = identity?.getPrincipal().toString();
+    return await service.execute({ ...input, principal });
   }
 
   async getAccount() {

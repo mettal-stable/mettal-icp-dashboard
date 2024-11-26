@@ -26,7 +26,6 @@ createRoot(document.getElementById("root")!).render(
       <SnackbarProvider>
         <NotificationProvider>
           <AuthProvider
-            provider={new ICPProvider()}
             adapter={
               new MettalAuthAdapter(new SessionService(), new ICPProvider())
             }

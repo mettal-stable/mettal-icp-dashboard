@@ -1,7 +1,5 @@
-import { SessionService } from "@auth/application/services/session.service";
 import { MettalAuthAdapter } from "@auth/data/mettal.auth.adapter";
 import { Auth } from "@auth/domain/models/auth.model";
-import { IAuthPort } from "@auth/domain/ports/auth.port";
 import { NotificationContext } from "@shared/providers/notification.provider";
 import * as React from "react";
 import { useContext, useState } from "react";
@@ -27,7 +25,6 @@ export type IAuthContext = {
 
 export interface IAuthProvider {
   children: React.ReactNode;
-  provider: IAuthPort;
   adapter: MettalAuthAdapter;
 }
 
@@ -51,7 +48,7 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
   const [providerClient, setProviderClient] = useState<any>(null);
   const [account, setAccount] = useState<any>(null);
 
-  const initProvider = async () => {
+  const init = async () => {
     await props.adapter.init();
     setProviderClient(await props.adapter.getAuthClient());
   };
@@ -59,36 +56,31 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
   const geAuth = async (): Promise<boolean> => {
     let isAuth = await props.adapter.isAuthenticated();
     setLoadingAuth(true);
-    console.log({ isAuth });
     if (isAuth) {
       const auth = await props.adapter.getAuth();
-      console.log({ auth });
+
       if (auth) {
         await props.adapter.registerSession(auth);
-
         setAuth(auth);
         navigate("/");
-
         const account = await getAccount();
         if (!account) {
           await props.adapter.logout();
           setLoadingAuth(false);
+          setAuth(null);
           useErrorAlert!({ message: "Account not found" });
           return true;
         }
-
         setLoadingAuth(false);
         return true;
       } else {
         console.log("no auth value");
-        await props.adapter.logout();
         setLoadingAuth(false);
         return false;
       }
     } else {
       console.log("no isAuth");
       setLoadingAuth(false);
-      await props.adapter.logout();
       return false;
     }
   };
@@ -104,18 +96,12 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
 
   const linkIcp = async (input?: any) => {
     try {
-      await props.adapter.login(null);
-      let identity = props.provider.getIdentity();
-
       await props.adapter.linkIcp({
         access_token: accessTmpToken?.access_token,
         email: input?.email,
-        principal: identity?.getPrincipal().toString(),
       });
 
-      setTimeout(() => {
-        geAuth();
-      }, 1000);
+      geAuth();
     } catch (error: any) {
       useErrorAlert!(error);
       console.error(error);
@@ -165,7 +151,7 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
   }, [providerClient]);
 
   React.useEffect(() => {
-    initProvider();
+    init();
   }, []);
 
   return (

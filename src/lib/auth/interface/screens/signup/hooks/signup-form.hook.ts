@@ -42,7 +42,7 @@ const GetSignupStep = (step: StepType) => {
 export const useSignupFormHook = () => {
   const timeout = 3000;
   const [step, setStep] = useState(SignupSteps[0]);
-  const { signup, linkIcp, validateOtp, logout } = useContext<any>(AuthContext);
+  const { signup, linkIcp, validateOtp } = useContext<any>(AuthContext);
   const [otpValue, setOtpValue] = useState<string>("");
   const [inputs, setInputs] = useState<SignupInput>(inputProps);
   const [error, _] = useState<string>("");
