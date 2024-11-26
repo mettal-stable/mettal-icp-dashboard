@@ -101,7 +101,7 @@ export const useSignupFormHook = () => {
   }, [step]);
 
   useEffect(() => {
-    logout();
+    // logout();
   }, []);
 
   return {

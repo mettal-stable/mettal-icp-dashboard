@@ -29,7 +29,6 @@ export interface IAuthProvider {
   children: React.ReactNode;
   provider: IAuthPort;
   adapter: MettalAuthAdapter;
-  session: SessionService;
 }
 
 export type AccessTmpToken = {
@@ -53,52 +52,59 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
   const [account, setAccount] = useState<any>(null);
 
   const initProvider = async () => {
-    await props.provider.init();
-    setProviderClient(props.provider.authClient);
+    await props.adapter.init();
+    setProviderClient(await props.adapter.getAuthClient());
   };
 
   const geAuth = async (): Promise<boolean> => {
+    let isAuth = await props.adapter.isAuthenticated();
     setLoadingAuth(true);
-    let isAuth = await props.provider.isAuthenticated();
-
+    console.log({ isAuth });
     if (isAuth) {
-      const auth = await props.provider.geAuth();
+      const auth = await props.adapter.getAuth();
+      console.log({ auth });
       if (auth) {
-        props.session.register(auth);
+        await props.adapter.registerSession(auth);
+
         setAuth(auth);
         navigate("/");
 
         const account = await getAccount();
         if (!account) {
-          await props.provider.logout();
+          await props.adapter.logout();
+          setLoadingAuth(false);
           useErrorAlert!({ message: "Account not found" });
           return true;
         }
+
         setLoadingAuth(false);
         return true;
       } else {
+        console.log("no auth value");
+        await props.adapter.logout();
         setLoadingAuth(false);
         return false;
       }
     } else {
+      console.log("no isAuth");
       setLoadingAuth(false);
+      await props.adapter.logout();
       return false;
     }
   };
 
   const login = async (input?: any) => {
     try {
-      await props.provider.login(input);
+      await props.adapter.login(input);
       await geAuth();
     } catch (error: any) {
       useErrorAlert!(error);
-      console.error(error);
     }
   };
 
   const linkIcp = async (input?: any) => {
     try {
-      await props.provider.login();
+      await props.adapter.login(null);
       let identity = props.provider.getIdentity();
 
       await props.adapter.linkIcp({
@@ -119,7 +125,6 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
   const validateOtp = async (input: any) => {
     try {
       let response = await props.adapter.validateOtp(input);
-      console.log(response);
       setAccessTmpToken(response);
       return response;
     } catch (error: any) {
@@ -129,8 +134,7 @@ const AuthProvider: React.FC<IAuthProvider> = (props) => {
   };
 
   const logout = async () => {
-    await props.session.signout();
-    await props.provider.logout();
+    await props.adapter.logout();
     setAuth(null);
   };
 

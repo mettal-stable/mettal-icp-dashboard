@@ -18,7 +18,6 @@ import {
 import { KycStatus, useHomeScreenHook } from "./hooks/home.screen.hook";
 export const HomeScreen = () => {
   const hook = useHomeScreenHook();
-  console.log({ status: hook.account?.kyc?.status });
   return (
     <MainLayout
       alert={

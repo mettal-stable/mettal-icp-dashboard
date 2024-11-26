@@ -27,8 +27,9 @@ createRoot(document.getElementById("root")!).render(
         <NotificationProvider>
           <AuthProvider
             provider={new ICPProvider()}
-            session={new SessionService()}
-            adapter={new MettalAuthAdapter()}
+            adapter={
+              new MettalAuthAdapter(new SessionService(), new ICPProvider())
+            }
           >
             <SocketProvider>
               <ThemeProvider theme={theme}>
