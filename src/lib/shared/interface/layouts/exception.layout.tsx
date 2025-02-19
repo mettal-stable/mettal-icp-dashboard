@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
-import { ReactNode } from "react";
 import theme from "@shared/interface/themes/theme.default";
-import { DefaultNavbar } from "@shared/interface/components/navbar/default.navbar";
+import { ReactNode } from "react";
 export interface IMainLayout {
   children: ReactNode;
 }
@@ -15,7 +14,6 @@ export const ExceptionLayout: React.FC<IMainLayout> = (props) => {
         bgcolor: theme.palette.background.default,
       }}
     >
-      <DefaultNavbar />
       <Box sx={{ pt: 3 }}>{props.children}</Box>
     </Box>
   );
