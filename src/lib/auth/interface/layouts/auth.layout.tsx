@@ -17,6 +17,9 @@ export const AuthLayout: React.FC<IAuthLayout> = (props) => {
       <AuthNavbar />
       <Box sx={{ pb: 6 }}></Box>
       {props.children}
+      <Box sx={{ textAlign: "center", mt: 3, fontWeight: 300 }}>
+        Copyright 2025 Mettal All rights reserved.
+      </Box>
     </Box>
   );
 };
